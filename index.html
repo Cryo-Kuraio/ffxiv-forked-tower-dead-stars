@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ooze Pattern Selector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #0a0b0b 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #4f46e5;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(20px);
+        }
+
+        .callout-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .callout-input {
+            padding: 12px 20px;
+            font-size: 18px;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            width: 300px;
+            text-align: center;
+        }
+
+        .image-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .image-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .buff-group {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .group-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .image-option {
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .image-option:hover {
+            border-color: #00ff88;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .image-option img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .number-btn {
+            background: #838cb3;
+            border: none;
+            color: white;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .number-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+        }
+
+        .result-display {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+        }
+
+        .result-info {
+            margin-bottom: 30px;
+        }
+
+        .result-info h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .result-info p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .position-display {
+            font-size: 72px;
+            font-weight: bold;
+            letter-spacing: 8px;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-family: 'Impact', 'Arial Black', sans-serif;
+        }
+
+        .result-image {
+            margin-top: 30px;
+        }
+
+        .result-image img {
+            max-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn {
+            background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .w-5 {
+            width: 1.25rem;
+        }
+
+        .h-5 {
+            height: 1.25rem;
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+
+        .ml-2 {
+            margin-left: 0.5rem;
+        }
+
+        .items-center{
+            align-items: center;
+        }
+
+        .flex{
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+        
+        .justify-between{
+            justify-content: space-between
+        }
+
+        .object-contain {
+            object-fit: contain;
+        }
+
+        .w-12 {
+            width: 3rem;
+        }
+
+        .h-12 {
+            height: 3rem;
+        }
+
+        .bg-gray-800 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 30px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-copyright {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.8;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .footer-link svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .number-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .position-display {
+                font-size: 48px;
+                letter-spacing: 4px;
+            }
+            
+            .callout-input {
+                width: 250px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-toggle">
+        <span>Callouts</span>
+        <div class="toggle-switch" id="adminToggle">
+            <div class="toggle-slider"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Page 1: Image Selection -->
+        <div id="imageSelection" class="page">
+            <div class="header">
+                <h1>FFXIV Forked Tower - Dead Stars</h1>
+                <h2>Choose Debuff</h2>
+            </div>
+
+            <div class="image-selection">
+                <div class="image-group">
+                    <div class="group-title">Ice Ooze</div>
+                    <div class="image-grid">
+                        <div class="image-option" data-buff="ice1">
+                            <img src="./img/ice1.png" alt="Ice Ooze 1">
+                        </div>
+                        <div class="image-option" data-buff="ice2">
+                            <img src="./img/ice2.png" alt="Ice Ooze 2">
+                        </div>
+                        <div class="image-option" data-buff="ice3">
+                            <img src="./img/ice3.png" alt="Ice Ooze 3">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-group">
+                    <div class="group-title">Nova Ooze</div>
+                    <div class="image-grid">
+                        <div class="image-option" data-buff="nova1">
+                            <img src="./img/nova1.png" alt="Nova Ooze 1">
+                        </div>
+                        <div class="image-option" data-buff="nova2">
+                            <img src="./img/nova2.png" alt="Nova Ooze 2">
+                        </div>
+                        <div class="image-option" data-buff="nova3">
+                            <img src="./img/nova3.png" alt="Nova Ooze 3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Number Selection -->
+        <div id="numberSelection" class="page hidden">
+            <div class="header">
+                <h1>Choose Pattern</h1>
+                <div class="flex items items-center justify-between">
+                    <button class="back-btn items-center flex" onclick="showImageSelection()"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+                    </svg>Back to Debuff Selection</button>
+                </div>
+            </div>
+
+            <div id="calloutSection" class="callout-section hidden">
+                <input type="text" id="calloutInput" class="callout-input" placeholder="Enter callout pattern (e.g. 1224)">
+            </div>
+
+            <div class="number-grid">
+                <!-- Numbers 1-32 will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Page 3: Result Display -->
+        <div id="resultDisplay" class="page hidden">
+            <div class="result-display">
+                <div class="result-info">
+                    <img id="buffLogo" src="" alt="Buff" style="height: 60px; margin-right: 15px; vertical-align: middle;">
+                    <h2 id="resultTitle" style="display: inline; vertical-align: middle;">Pattern Result</h2>
+                </div>
+                
+                <div class="position-display" id="positionText">
+                    <!-- Position will be displayed here -->
+                </div>
+                
+                <div class="pattern-image" style="margin: 30px 0;">
+                    <img id="patternImage" src="" alt="Pattern" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);">
+                </div>
+                
+                <div>
+                    <button class="back-btn items-center flex" onclick="showImageSelection()"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+                    </svg> Back to Debuff Selection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-copyright">
+                FINAL FANTASY XIV ©2010 Square Enix Co., Ltd. FINAL FANTASY is a registered trademark of Square Enix Holdings Co., Ltd. All material used under license.
+            </div>
+            <div class="footer-links">
+                <a href="https://www.twitch.tv/cryokuraio" target="_blank" class="footer-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+                    </svg>
+                    Twitch
+                </a>
+                <a href="https://github.com/" target="_blank" class="footer-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pattern data
+        const patternData = [
+            {pattern: "12243143", number: 1, nova1: "CCDD", nova2: "CDDD", nova3: "CD3D", ice1: "DCDD", ice2: "DCCC", ice3: "D4CC"},
+            {pattern: "12312443", number: 2, nova1: "CDCC", nova2: "CDDD", nova3: "CDD4", ice1: "DDCC", ice2: "DCCC", ice3: "DCC3"},
+            {pattern: "13214234", number: 3, nova1: "C4CC", nova2: "CDCC", nova3: "CD33", ice1: "333D", ice2: "3334", ice3: "33D4"},
+            {pattern: "13322441", number: 4, nova1: "CCCD", nova2: "CCDD", nova3: "CCD4", ice1: "3433", ice2: "3443", ice3: "3DCC"},
+            {pattern: "13344221", number: 5, nova1: "CCC4", nova2: "CCCD", nova3: "C344", ice1: "3D33", ice2: "3433", ice3: "3DDC"},
+            {pattern: "13412432", number: 6, nova1: "CDCC", nova2: "CDDC", nova3: "C433", ice1: "3334", ice2: "3344", ice3: "334D"},
+            {pattern: "14314223", number: 7, nova1: "CDCC", nova2: "C444", nova3: "C344", ice1: "44CC", ice2: "4433", ice3: "4CDC"},
+            {pattern: "14423123", number: 8, nova1: "CCDC", nova2: "CCDD", nova3: "C434", ice1: "4C44", ice2: "4CCC", ice3: "4DCC"},
+            {pattern: "21134234", number: 9, nova1: "DDCC", nova2: "DCCC", nova3: "DC4C", ice1: "CDCC", ice2: "CDDD", ice3: "CDD4"},
+            {pattern: "21421334", number: 10, nova1: "DCDD", nova2: "DCCC", nova3: "D443", ice1: "CCDD", ice2: "CDDD", ice3: "CDD4"},
+            {pattern: "23314214", number: 11, nova1: "DDCD", nova2: "DDCC", nova3: "D343", ice1: "3433", ice2: "3DDD", ice3: "3CDD"},
+            {pattern: "23423114", number: 12, nova1: "DCDD", nova2: "D333", nova3: "D33C", ice1: "33DD", ice2: "3344", ice3: "3DCD"},
+            {pattern: "24123143", number: 13, nova1: "D3DD", nova2: "DCDD", nova3: "DC44", ice1: "444C", ice2: "4443", ice3: "4DCC"},
+            {pattern: "24321341", number: 14, nova1: "DCDD", nova2: "DCCD", nova3: "DCC4", ice1: "4443", ice2: "4433", ice3: "443C"},
+            {pattern: "24411332", number: 15, nova1: "DDDC", nova2: "DDCC", nova3: "D4CC", ice1: "4344", ice2: "4334", ice3: "4CDD"},
+            {pattern: "24433112", number: 16, nova1: "DDD3", nova2: "DDDC", nova3: "DD3C", ice1: "4C44", ice2: "4CC4", ice3: "43DD"},
+            {pattern: "31122443", number: 17, nova1: "333D", nova2: "33DD", nova3: "3CDD", ice1: "C4CC", ice2: "CDCC", ice3: "CD33"},
+            {pattern: "31144223", number: 18, nova1: "3334", nova2: "3344", nova3: "3CCD", ice1: "CDCC", ice2: "CDDC", ice3: "C433"},
+            {pattern: "31234214", number: 19, nova1: "3433", nova2: "3443", nova3: "3DCC", ice1: "CCCD", ice2: "CCDD", ice3: "C334"},
+            {pattern: "31432412", number: 20, nova1: "3D33", nova2: "3DD3", nova3: "34CC", ice1: "CCC4", ice2: "CCCD", ice3: "CC4D"},
+            {pattern: "32132441", number: 21, nova1: "3433", nova2: "3DDD", nova3: "3CDD", ice1: "DD33", ice2: "DDCC", ice3: "D343"},
+            {pattern: "32241341", number: 22, nova1: "33DD", nova2: "3344", nova3: "3DCD", ice1: "DCDD", ice2: "D333", ice3: "D433"},
+            {pattern: "34134221", number: 23, nova1: "3433", nova2: "3444", nova3: "3C44", ice1: "4433", ice2: "44CC", ice3: "433C"},
+            {pattern: "34421321", number: 24, nova1: "3344", nova2: "3444", nova3: "344D", ice1: "4344", ice2: "4333", ice3: "4DDC"},
+            {pattern: "41132432", number: 25, nova1: "4434", nova2: "4433", nova3: "4CDC", ice1: "CDCC", ice2: "C444", ice3: "C344"},
+            {pattern: "41241332", number: 26, nova1: "4344", nova2: "4CCC", nova3: "4DCC", ice1: "CC44", ice2: "CCDD", ice3: "C434"},
+            {pattern: "42143123", number: 27, nova1: "4344", nova2: "4334", nova3: "4CDD", ice1: "DDDC", ice2: "DDCC", ice3: "DDC3"},
+            {pattern: "42211334", number: 28, nova1: "444C", nova2: "4443", nova3: "44C3", ice1: "D3DD", ice2: "D33D", ice3: "DC44"},
+            {pattern: "42233114", number: 29, nova1: "4443", nova2: "4433", nova3: "443C", ice1: "DCDD", ice2: "DCCD", ice3: "D344"},
+            {pattern: "42341321", number: 30, nova1: "4C44", nova2: "4344", nova3: "43DD", ice1: "DDD3", ice2: "DDDC", ice3: "DD3C"},
+            {pattern: "43243112", number: 31, nova1: "4344", nova2: "4333", nova3: "4D33", ice1: "3344", ice2: "3444", ice3: "34C4"},
+            {pattern: "43312412", number: 32, nova1: "4433", nova2: "4333", nova3: "4DDC", ice1: "3433", ice2: "3444", ice3: "3C44"}
+        ];
+
+        // Callout mappings
+        const calloutMap = {
+            "1224": 1, "1231": 2, "1321": 3, "1332": 4, "1334": 5, "1341": 6,
+            "1431": 7, "1442": 8, "2113": 9, "2142": 10, "2331": 11, "2342": 12,
+            "2412": 13, "2432": 14, "2441": 15, "2443": 16, "3112": 17, "3114": 18,
+            "3123": 19, "3143": 20, "3213": 21, "3224": 22, "3413": 23, "3442": 24,
+            "4113": 25, "4124": 26, "4214": 27, "4221": 28, "4223": 29, "4234": 30,
+            "4324": 31, "4331": 32
+        };
+
+        // Image URLs
+        const imageUrls = {
+            ice1: "./img/ice1.png",
+            ice2: "./img/ice2.png",
+            ice3: "./img/ice3.png",
+            nova1: "./img/nova1.png",
+            nova2: "./img/nova2.png",
+            nova3: "./img/nova3.png"
+        };
+
+        let selectedBuff = '';
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            generateNumberButtons();
+            setupAdminToggle();
+        });
+
+        function setupEventListeners() {
+            // Image selection
+            document.querySelectorAll('.image-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectedBuff = this.dataset.buff;
+                    showNumberSelection();
+                });
+            });
+
+            // Callout input
+            document.getElementById('calloutInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleCalloutInput();
+                }
+            });
+        }
+
+        function setupAdminToggle() {
+            const adminToggle = document.getElementById('adminToggle');
+            const calloutSection = document.getElementById('calloutSection');
+            const calloutInput = document.getElementById('calloutInput');
+            let isActive = false;
+
+            adminToggle.addEventListener('click', function() {
+                isActive = !isActive;
+                
+                if (isActive) {
+                    adminToggle.classList.add('active');
+                    calloutSection.classList.remove('hidden');
+                    if (document.getElementById('numberSelection').classList.contains('hidden') === false) {
+                        calloutInput.focus();
+                    }
+                } else {
+                    adminToggle.classList.remove('active');
+                    calloutSection.classList.add('hidden');
+                }
+            });
+
+            // Store the state for later use
+            adminToggle.isActive = () => isActive;
+        }
+
+        function handleCalloutInput() {
+            const input = document.getElementById('calloutInput').value.trim();
+            const patternNumber = calloutMap[input];
+            
+            if (patternNumber) {
+                showResult(patternNumber);
+            } else {
+                alert('Invalid callout pattern. Please enter a valid pattern.');
+            }
+        }
+
+        function generateNumberButtons() {
+            const numberGrid = document.querySelector('.number-grid');
+            
+            for (let i = 1; i <= 32; i++) {
+                const button = document.createElement('button');
+                button.className = 'number-btn';
+                button.textContent = i;
+                button.addEventListener('click', () => showResult(i));
+                numberGrid.appendChild(button);
+            }
+        }
+
+        function showImageSelection() {
+            hideAllPages();
+            document.getElementById('imageSelection').classList.remove('hidden');
+        }
+
+        function showNumberSelection() {
+            if (!selectedBuff) {
+                alert('Please select an ooze type first.');
+                return;
+            }
+            
+            hideAllPages();
+            document.getElementById('numberSelection').classList.remove('hidden');
+            
+            // Focus callout input if admin mode is enabled
+            const adminToggle = document.getElementById('adminToggle');
+            if (adminToggle.isActive && adminToggle.isActive()) {
+                setTimeout(() => {
+                    document.getElementById('calloutInput').focus();
+                }, 100);
+            }
+        }
+
+        function showResult(patternNumber) {
+            const data = patternData.find(d => d.number === patternNumber);
+            
+            if (!data) {
+                alert('Missing data for pattern number: ' + patternNumber);
+                return;
+            }
+
+            const position = data[selectedBuff];
+            if (!position) {
+                document.getElementById('positionText').textContent = 'MISSING DATA';
+            } else {
+                document.getElementById('positionText').textContent = position;
+            }
+
+            // Update result display
+            document.getElementById('resultTitle').textContent = `Pattern ${patternNumber}`;
+            document.getElementById('buffLogo').src = imageUrls[selectedBuff];
+            document.getElementById('buffLogo').alt = selectedBuff.toUpperCase();
+            document.getElementById('patternImage').src = `./img/${data.pattern}.png`;
+            document.getElementById('patternImage').alt = `Pattern ${data.pattern}`;
+            //document.getElementById('resultImage').src = imageUrls[selectedBuff];
+            //document.getElementById('resultImage').alt = selectedBuff.toUpperCase();
+
+            hideAllPages();
+            document.getElementById('resultDisplay').classList.remove('hidden');
+        }
+
+        function hideAllPages() {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
