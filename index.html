@@ -606,6 +606,9 @@
         function showImageSelection() {
             hideAllPages();
             document.getElementById('imageSelection').classList.remove('hidden');
+
+            // Clear the callout input field when returning to debuff selection
+            document.getElementById('calloutInput').value = '';
         }
 
         function showNumberSelection() {
