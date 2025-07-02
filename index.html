@@ -112,12 +112,6 @@
             backdrop-filter: blur(10px);
         }
 
-        .buff-group {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-        }
-
         .group-title {
             text-align: center;
             font-size: 24px;
@@ -141,7 +135,7 @@
         }
 
         .image-option:hover {
-            border-color: #00ff88;
+            border-color: #4f46e5;
             transform: scale(1.05);
             box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
         }
@@ -152,30 +146,81 @@
             display: block;
         }
 
-        .number-grid {
+        /* Improved Pattern Selection Styles */
+        .pattern-selection {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
             margin-bottom: 40px;
+            max-width: 800px;
+            height: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .number-btn {
-            background: #838cb3;
-            border: none;
-            color: white;
-            padding: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 12px;
+        .pattern-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 15px;
+            backdrop-filter: blur(15px);
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
         }
 
-        .number-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+        .pattern-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .pattern-card:hover::before {
+            left: 100%;
+        }
+
+        .pattern-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #4f46e5;
+            box-shadow: 0 15px 35px rgba(0, 255, 136, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .pattern-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+            text-shadow: 0 0 20px #4f46e5;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+        }
+
+        .pattern-image {
+            width: 100%;
+            height: 140px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .pattern-card:hover .pattern-image {
+            transform: scale(1.05);
+        }
+
+        .pattern-description {
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.3;
         }
 
         .result-display {
@@ -261,6 +306,7 @@
 
         .items-center{
             align-items: center;
+            justify-content: center
         }
 
         .flex{
@@ -269,10 +315,6 @@
 
         .flex-col {
             flex-direction: column;
-        }
-        
-        .justify-between{
-            justify-content: space-between
         }
 
         .object-contain {
@@ -339,9 +381,49 @@
             height: 24px;
         }
 
+        /* Mobile-first responsive design */
         @media (max-width: 768px) {
-            .number-grid {
-                grid-template-columns: repeat(4, 1fr);
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            
+            .header h2 {
+                font-size: 20px;
+            }
+            
+            /* Consistent 2x2 grid on mobile with fixed height */
+            .pattern-selection {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                gap: 12px;
+                margin-bottom: 30px;
+                height: 400px;
+                max-width: 100%;
+            }
+            
+            .pattern-card {
+                padding: 12px;
+                border-radius: 12px;
+            }
+            
+            .pattern-number {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+            
+            .pattern-image {
+                height: 80px;
+                margin-bottom: 8px;
+            }
+            
+            .pattern-description {
+                font-size: 10px;
+                line-height: 1.2;
             }
             
             .position-display {
@@ -352,6 +434,67 @@
             .callout-input {
                 width: 250px;
                 font-size: 16px;
+            }
+            
+            .callout-section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .admin-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 8px;
+                font-size: 11px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .pattern-selection {
+                gap: 10px;
+                height: 350px;
+            }
+            
+            .pattern-card {
+                padding: 10px;
+            }
+            
+            .pattern-number {
+                font-size: 20px;
+            }
+            
+            .pattern-image {
+                height: 60px;
+            }
+            
+            .pattern-description {
+                font-size: 9px;
+            }
+            
+            .callout-input {
+                width: 200px;
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+        }
+
+        /* Tablet landscape */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .pattern-selection {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                gap: 15px;
+                height: 450px;
+            }
+            
+            .pattern-image {
+                height: 120px;
             }
         }
     </style>
@@ -405,23 +548,45 @@
             </div>
         </div>
 
-        <!-- Page 2: Number Selection -->
-        <div id="numberSelection" class="page hidden">
+        <!-- Page 2: Pattern Selection -->
+        <div id="patternSelection" class="page hidden">
             <div class="header">
                 <h1>Choose Pattern</h1>
-                <div class="flex items items-center justify-between">
-                    <button class="back-btn items-center flex" onclick="showImageSelection()"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
-                    </svg>Back to Debuff Selection</button>
-                </div>
             </div>
 
             <div id="calloutSection" class="callout-section hidden">
                 <input type="text" id="calloutInput" class="callout-input" placeholder="Enter callout pattern (e.g. 1224)">
             </div>
 
-            <div class="number-grid">
-                <!-- Numbers 1-32 will be generated by JavaScript -->
+            <div class="pattern-selection">
+                <div class="pattern-card" data-pattern="1">
+                    <div class="pattern-number">1</div>
+                    <img src="./img/1s.png" alt="Pattern 1" class="pattern-image">
+                </div>
+                
+                <div class="pattern-card" data-pattern="2">
+                    <div class="pattern-number">2</div>
+                    <img src="./img/2s.png" alt="Pattern 2" class="pattern-image">
+                </div>
+                
+                <div class="pattern-card" data-pattern="3">
+                    <div class="pattern-number">3</div>
+                    <img src="./img/3s.png" alt="Pattern 3" class="pattern-image">
+                </div>
+                
+                <div class="pattern-card" data-pattern="4">
+                    <div class="pattern-number">4</div>
+                    <img src="./img/4s.png" alt="Pattern 4" class="pattern-image">
+                </div>
+            </div>
+
+            <div class="flex items items-center justify-center">
+                <button class="back-btn items-center flex" onclick="showImageSelection()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                    Back to Debuff Selection
+                </button>
             </div>
         </div>
 
@@ -437,14 +602,17 @@
                     <!-- Position will be displayed here -->
                 </div>
                 
-                <div class="pattern-image" style="margin: 30px 0;">
-                    <img id="patternImage" src="" alt="Pattern" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);">
+                <div class="pattern-image" style="margin: 30px 0; max-width: 400px; margin-left: auto; margin-right: auto;">
+                    <img id="patternImage" src="" alt="Pattern" style="width: 100%; height: auto; max-height: 300px; object-fit: contain; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);">
                 </div>
                 
-                <div>
-                    <button class="back-btn items-center flex" onclick="showImageSelection()"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
-                    </svg> Back to Debuff Selection</button>
+                <div class="flex items items-center justify-center">
+                    <button class="back-btn items-center flex" onclick="showImageSelection()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                        Back to Debuff Selection
+                    </button>
                 </div>
             </div>
         </div>
@@ -473,50 +641,17 @@
     </div>
 
     <script>
-        // Pattern data
+        // Simplified pattern data for 4 patterns only
         const patternData = [
-            {pattern: "12243143", number: 1, nova1: "CCDD", nova2: "CDDD", nova3: "CD3D", ice1: "DCDD", ice2: "DCCC", ice3: "D4CC"},
-            {pattern: "12312443", number: 2, nova1: "CDCC", nova2: "CDDD", nova3: "CDD4", ice1: "DDCC", ice2: "DCCC", ice3: "DCC3"},
-            {pattern: "13214234", number: 3, nova1: "C4CC", nova2: "CDCC", nova3: "CD33", ice1: "333D", ice2: "3334", ice3: "33D4"},
-            {pattern: "13322441", number: 4, nova1: "CCCD", nova2: "CCDD", nova3: "CCD4", ice1: "3433", ice2: "3443", ice3: "3DCC"},
-            {pattern: "13344221", number: 5, nova1: "CCC4", nova2: "CCCD", nova3: "C344", ice1: "3D33", ice2: "3433", ice3: "3DDC"},
-            {pattern: "13412432", number: 6, nova1: "CDCC", nova2: "CDDC", nova3: "C433", ice1: "3334", ice2: "3344", ice3: "334D"},
-            {pattern: "14314223", number: 7, nova1: "CDCC", nova2: "C444", nova3: "C344", ice1: "44CC", ice2: "4433", ice3: "4CDC"},
-            {pattern: "14423123", number: 8, nova1: "CCDC", nova2: "CCDD", nova3: "C434", ice1: "4C44", ice2: "4CCC", ice3: "4DCC"},
-            {pattern: "21134234", number: 9, nova1: "DDCC", nova2: "DCCC", nova3: "DC4C", ice1: "CDCC", ice2: "CDDD", ice3: "CDD4"},
-            {pattern: "21421334", number: 10, nova1: "DCDD", nova2: "DCCC", nova3: "D443", ice1: "CCDD", ice2: "CDDD", ice3: "CDD4"},
-            {pattern: "23314214", number: 11, nova1: "DDCD", nova2: "DDCC", nova3: "D343", ice1: "3433", ice2: "3DDD", ice3: "3CDD"},
-            {pattern: "23423114", number: 12, nova1: "DCDD", nova2: "D333", nova3: "D33C", ice1: "33DD", ice2: "3344", ice3: "3DCD"},
-            {pattern: "24123143", number: 13, nova1: "D3DD", nova2: "DCDD", nova3: "DC44", ice1: "444C", ice2: "4443", ice3: "4DCC"},
-            {pattern: "24321341", number: 14, nova1: "DCDD", nova2: "DCCD", nova3: "DCC4", ice1: "4443", ice2: "4433", ice3: "443C"},
-            {pattern: "24411332", number: 15, nova1: "DDDC", nova2: "DDCC", nova3: "D4CC", ice1: "4344", ice2: "4334", ice3: "4CDD"},
-            {pattern: "24433112", number: 16, nova1: "DDD3", nova2: "DDDC", nova3: "DD3C", ice1: "4C44", ice2: "4CC4", ice3: "43DD"},
-            {pattern: "31122443", number: 17, nova1: "333D", nova2: "33DD", nova3: "3CDD", ice1: "C4CC", ice2: "CDCC", ice3: "CD33"},
-            {pattern: "31144223", number: 18, nova1: "3334", nova2: "3344", nova3: "3CCD", ice1: "CDCC", ice2: "CDDC", ice3: "C433"},
-            {pattern: "31234214", number: 19, nova1: "3433", nova2: "3443", nova3: "3DCC", ice1: "CCCD", ice2: "CCDD", ice3: "C334"},
-            {pattern: "31432412", number: 20, nova1: "3D33", nova2: "3DD3", nova3: "34CC", ice1: "CCC4", ice2: "CCCD", ice3: "CC4D"},
-            {pattern: "32132441", number: 21, nova1: "3433", nova2: "3DDD", nova3: "3CDD", ice1: "DD33", ice2: "DDCC", ice3: "D343"},
-            {pattern: "32241341", number: 22, nova1: "33DD", nova2: "3344", nova3: "3DCD", ice1: "DCDD", ice2: "D333", ice3: "D433"},
-            {pattern: "34134221", number: 23, nova1: "3433", nova2: "3444", nova3: "3C44", ice1: "4433", ice2: "44CC", ice3: "433C"},
-            {pattern: "34421321", number: 24, nova1: "3344", nova2: "3444", nova3: "344D", ice1: "4344", ice2: "4333", ice3: "4DDC"},
-            {pattern: "41132432", number: 25, nova1: "4434", nova2: "4433", nova3: "4CDC", ice1: "CDCC", ice2: "C444", ice3: "C344"},
-            {pattern: "41241332", number: 26, nova1: "4344", nova2: "4CCC", nova3: "4DCC", ice1: "CC44", ice2: "CCDD", ice3: "C434"},
-            {pattern: "42143123", number: 27, nova1: "4344", nova2: "4334", nova3: "4CDD", ice1: "DDDC", ice2: "DDCC", ice3: "DDC3"},
-            {pattern: "42211334", number: 28, nova1: "444C", nova2: "4443", nova3: "44C3", ice1: "D3DD", ice2: "D33D", ice3: "DC44"},
-            {pattern: "42233114", number: 29, nova1: "4443", nova2: "4433", nova3: "443C", ice1: "DCDD", ice2: "DCCD", ice3: "D344"},
-            {pattern: "42341321", number: 30, nova1: "4C44", nova2: "4344", nova3: "43DD", ice1: "DDD3", ice2: "DDDC", ice3: "DD3C"},
-            {pattern: "43243112", number: 31, nova1: "4344", nova2: "4333", nova3: "4D33", ice1: "3344", ice2: "3444", ice3: "34C4"},
-            {pattern: "43312412", number: 32, nova1: "4433", nova2: "4333", nova3: "4DDC", ice1: "3433", ice2: "3444", ice3: "3C44"}
+            {pattern: "1", number: 1, nova1: "CDCC", nova2: "C444", nova3: "C344", ice1: "44CC", ice2: "4433", ice3: "4CDC"},
+            {pattern: "2", number: 2, nova1: "33DD", nova2: "3344", nova3: "3DCD", ice1: "DCDD", ice2: "D333", ice3: "D433"},
+            {pattern: "3", number: 3, nova1: "3D33", nova2: "3DD3", nova3: "34CC", ice1: "CCC4", ice2: "CCCD", ice3: "CC4D"},
+            {pattern: "4", number: 4, nova1: "444C", nova2: "4443", nova3: "4DCC", ice1: "D3DD", ice2: "D33D", ice3: "DC44"}
         ];
 
-        // Callout mappings
+        // Simplified callout mappings
         const calloutMap = {
-            "1224": 1, "1231": 2, "1321": 3, "1332": 4, "1334": 5, "1341": 6,
-            "1431": 7, "1442": 8, "2113": 9, "2142": 10, "2331": 11, "2342": 12,
-            "2412": 13, "2432": 14, "2441": 15, "2443": 16, "3112": 17, "3114": 18,
-            "3123": 19, "3143": 20, "3213": 21, "3224": 22, "3413": 23, "3442": 24,
-            "4113": 25, "4124": 26, "4214": 27, "4221": 28, "4223": 29, "4234": 30,
-            "4324": 31, "4331": 32
+            "1224": 1, "1231": 2, "1321": 3, "1332": 4
         };
 
         // Image URLs
@@ -534,7 +669,6 @@
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
-            generateNumberButtons();
             setupAdminToggle();
         });
 
@@ -543,7 +677,15 @@
             document.querySelectorAll('.image-option').forEach(option => {
                 option.addEventListener('click', function() {
                     selectedBuff = this.dataset.buff;
-                    showNumberSelection();
+                    showPatternSelection();
+                });
+            });
+
+            // Pattern selection
+            document.querySelectorAll('.pattern-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const patternNumber = parseInt(this.dataset.pattern);
+                    showResult(patternNumber);
                 });
             });
 
@@ -567,7 +709,7 @@
                 if (isActive) {
                     adminToggle.classList.add('active');
                     calloutSection.classList.remove('hidden');
-                    if (document.getElementById('numberSelection').classList.contains('hidden') === false) {
+                    if (document.getElementById('patternSelection').classList.contains('hidden') === false) {
                         calloutInput.focus();
                     }
                 } else {
@@ -591,18 +733,6 @@
             }
         }
 
-        function generateNumberButtons() {
-            const numberGrid = document.querySelector('.number-grid');
-            
-            for (let i = 1; i <= 32; i++) {
-                const button = document.createElement('button');
-                button.className = 'number-btn';
-                button.textContent = i;
-                button.addEventListener('click', () => showResult(i));
-                numberGrid.appendChild(button);
-            }
-        }
-
         function showImageSelection() {
             hideAllPages();
             document.getElementById('imageSelection').classList.remove('hidden');
@@ -611,14 +741,14 @@
             document.getElementById('calloutInput').value = '';
         }
 
-        function showNumberSelection() {
+        function showPatternSelection() {
             if (!selectedBuff) {
                 alert('Please select an ooze type first.');
                 return;
             }
             
             hideAllPages();
-            document.getElementById('numberSelection').classList.remove('hidden');
+            document.getElementById('patternSelection').classList.remove('hidden');
             
             // Focus callout input if admin mode is enabled
             const adminToggle = document.getElementById('adminToggle');
@@ -650,8 +780,6 @@
             document.getElementById('buffLogo').alt = selectedBuff.toUpperCase();
             document.getElementById('patternImage').src = `./img/${data.pattern}.png`;
             document.getElementById('patternImage').alt = `Pattern ${data.pattern}`;
-            //document.getElementById('resultImage').src = imageUrls[selectedBuff];
-            //document.getElementById('resultImage').alt = selectedBuff.toUpperCase();
 
             hideAllPages();
             document.getElementById('resultDisplay').classList.remove('hidden');
