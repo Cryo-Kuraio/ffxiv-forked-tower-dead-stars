@@ -264,6 +264,9 @@
             hideAllPages();
             document.getElementById('patternSelection').classList.remove('hidden');
 
+            // Update pattern images based on current variant
+            updatePatternImages();
+
             // Focus callout input if admin mode is enabled
             const adminToggle = document.getElementById('adminToggle');
             if (adminToggle.isActive && adminToggle.isActive()) {
@@ -327,6 +330,9 @@
                     // Update callout input placeholder based on variant
                     updateCalloutPlaceholder();
 
+                    // Update pattern images on page 2
+                    updatePatternImages();
+
                     // If we're currently showing results, update them with the new variant
                     if (currentPatternNumber && !document.getElementById('resultDisplay').classList.contains('hidden')) {
                         updateResultDisplay();
@@ -370,6 +376,18 @@
             document.getElementById('buffLogo').alt = selectedBuff.toUpperCase();
             document.getElementById('patternImage').src = `./img/${data.pattern}${currentVariant !== 'default' ? '_' + currentVariant : ''}.png`;
             document.getElementById('patternImage').alt = `Pattern ${currentVariant !== 'default' ? '_' + currentVariant : ''} ${data.pattern}`;
+        }
+
+        function updatePatternImages() {
+            document.querySelectorAll('.pattern-card').forEach(card => {
+                const patternNumber = card.dataset.pattern;
+                const patternImage = card.querySelector('.pattern-image');
+
+                // Update the image source based on current variant
+                const imageSrc = `./img/${patternNumber}s${currentVariant !== 'default' ? '_' + currentVariant : ''}.png`;
+                patternImage.src = imageSrc;
+                patternImage.alt = `Pattern ${patternNumber} (${currentVariant.toUpperCase()})`;
+            });
         }
     </script>
 </body>
