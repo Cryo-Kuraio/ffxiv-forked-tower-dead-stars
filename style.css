@@ -35,50 +35,91 @@ body {
     top: 20px;
     left: 20px;
     background: rgba(0, 0, 0, 0.8);
-    padding: 12px 16px;
-    border-radius: 25px;
+    padding: 8px;
+    border-radius: 50%;
     font-size: 14px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
-    z-index: 1000;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.variant-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.variant-current {
+    font-weight: bold;
+    font-size: 12px;
+    color: white;
+}
+
+.variant-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 60px;
+    margin-top: 2px;
+    /* Reduce gap from 5px to 2px */
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.variant-options {
+.variant-toggle:hover .variant-options {
     display: flex;
-    gap: 8px;
+}
+
+/* Add a pseudo-element to bridge the gap */
+.variant-options::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    /* Covers the gap */
+    left: 0;
+    right: 0;
+    height: 7px;
+    background: transparent;
+}
+
+/* Keep dropdown open when hovering over the gap or dropdown */
+.variant-toggle:hover .variant-options,
+.variant-options:hover {
+    display: flex;
 }
 
 .variant-option {
-    padding: 6px 12px;
-    border-radius: 15px;
+    padding: 6px 8px;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid transparent;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
-    min-width: 50px;
     text-align: center;
+    color: white;
 }
 
 .variant-option:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-1px);
 }
 
 .variant-option.active {
     background: linear-gradient(135deg, #4f46e5, #7c3aed);
     border-color: #4f46e5;
-    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-}
-
-.variant-label {
-    font-size: 12px;
-    opacity: 0.8;
-    font-weight: 500;
 }
 
 .callout-section {
@@ -324,19 +365,6 @@ body {
     object-fit: contain;
 }
 
-.w-12 {
-    width: 3rem;
-}
-
-.h-12 {
-    height: 3rem;
-}
-
-.bg-gray-800 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
-}
-
 .footer {
     margin-top: auto;
     padding: 30px 20px;
@@ -384,6 +412,120 @@ body {
     height: 24px;
 }
 
+.help-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 45px;
+    height: 45px;
+}
+
+.help-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    color: white;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #ff6b6b;
+}
+
+.how-to-section {
+    margin-bottom: 25px;
+}
+
+.how-to-section h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #4fc3f7;
+}
+
+.quick-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.step {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.step-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4fc3f7;
+    margin-bottom: 10px;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
+    margin: 20px 0;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
 /* Mobile-first responsive design */
 @media (max-width: 768px) {
     .container {
@@ -399,39 +541,45 @@ body {
         font-size: 20px;
     }
 
-
     /* Variant toggle adjustments for mobile */
-    .variant-toggle {
+
+    /* Consistent toggle positioning for mobile */
+    .variant-toggle,
+    .help-button {
         top: 15px;
+        width: 45px;
+        height: 45px;
+    }
+
+    .variant-toggle {
         left: 15px;
-        padding: 8px 12px;
-        font-size: 12px;
-        gap: 8px;
-        flex-direction: column;
-        align-items: flex-start;
+        padding: 8px;
+    }
+
+    .help-button {
+        right: 15px;
+        padding: 12px;
+        font-size: 18px;
+    }
+
+    .variant-current {
+        font-size: 11px;
     }
 
     .variant-options {
-        gap: 6px;
+        min-width: 55px;
+        padding: 6px;
     }
 
     .variant-option {
-        padding: 4px 8px;
-        font-size: 11px;
-        min-width: 40px;
+        padding: 5px 6px;
+        font-size: 10px;
     }
 
     .variant-label {
         font-size: 11px;
     }
 
-    /* Admin toggle adjustments */
-    .admin-toggle {
-        top: 15px;
-        right: 15px;
-        padding: 8px;
-        font-size: 11px;
-    }
 
     /* Consistent 2x2 grid on mobile with fixed height */
     .pattern-selection {
@@ -478,16 +626,19 @@ body {
         margin-bottom: 20px;
     }
 
-    .admin-toggle {
-        top: 15px;
-        right: 15px;
-        padding: 8px;
-        font-size: 11px;
-    }
 
     .footer-links {
         flex-direction: column;
         gap: 15px;
+    }
+
+    .modal-content {
+        margin: 10% auto;
+        padding: 20px;
+    }
+
+    .quick-steps {
+        grid-template-columns: 1fr;
     }
 }
 
