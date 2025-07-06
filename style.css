@@ -15,6 +15,8 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    background-attachment: fixed;
 }
 
 .container {
@@ -580,20 +582,20 @@ body {
         font-size: 11px;
     }
 
-
     /* Consistent 2x2 grid on mobile with fixed height */
     .pattern-selection {
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: auto auto;
         gap: 12px;
         margin-bottom: 30px;
-        height: 400px;
+        height: auto;
         max-width: 100%;
     }
 
     .pattern-card {
         padding: 12px;
         border-radius: 12px;
+        height: auto;
     }
 
     .pattern-number {
@@ -602,7 +604,7 @@ body {
     }
 
     .pattern-image {
-        height: 80px;
+        height: 120px;
         margin-bottom: 8px;
     }
 
@@ -646,11 +648,12 @@ body {
 @media (max-width: 480px) {
     .pattern-selection {
         gap: 10px;
-        height: 350px;
+        height: auto;
     }
 
     .pattern-card {
         padding: 10px;
+        height: auto;
     }
 
     .pattern-number {
@@ -658,7 +661,7 @@ body {
     }
 
     .pattern-image {
-        height: 60px;
+        height: 100px;
     }
 
     .pattern-description {
@@ -684,4 +687,17 @@ body {
     .pattern-image {
         height: 120px;
     }
+}
+
+/* Fix for result page pattern image container */
+.result-display .pattern-image {
+    height: auto !important;
+    min-height: auto !important;
+}
+
+.result-display .pattern-image img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
 }
