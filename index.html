@@ -57,9 +57,8 @@
             </div>
 
             <div class="how-to-section">
-                <h3>Video Tutorial (needs to be updated)</h3>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed//_pkW5-syIzE" frameborder="0"
+                    <iframe src="https://www.youtube.com/embed//3nLJDUsRnxE" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
@@ -70,13 +69,15 @@
                 <h3>Tips & Notes</h3>
                 <ul style="line-height: 1.6; margin-left: 20px;">
                     <li><strong>Waymark Variants:</strong> Use the toggle in the top-left to switch between BP, ABBA,
-                        MR, and X</li>
-                    <li><strong>Pattern Recognition:</strong> The first pair of ice and blue circles defines the pattern
+                        MR, and X.</li>
+                    <li><strong>Pattern Recognition:</strong> The first pair of ice and blue circles defines the
+                        pattern.
                     </li>
-                    <li><strong>Position Codes:</strong> Numbers/letters correspond to waymark positions on the platform
+                    <li><strong>Positions:</strong> Numbers/letters correspond to waymark positions on the
+                        platform.
                     </li>
                     <li><strong>X waymarks:</strong> This corresponds to no waymarks and uses the following codes Stay,
-                        Cross, Left and Right.
+                        Cross, Left and Right (looking inwards).
                     </li>
                 </ul>
             </div>
@@ -233,6 +234,9 @@
         let currentVariant = 'default';
         let currentPatternNumber = null;
 
+
+        const CURRENT_VERSION = '1.2.0'; // Increment for any meaningful change
+
         // Pattern data for all variants
         const patternData = {
             default: [
@@ -277,6 +281,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             setupEventListeners();
             setupVariantToggle(); // Add this line
+            checkVersion();
         });
 
         function setupEventListeners() {
@@ -458,6 +463,46 @@
                 }
             });
         });
+
+        function checkVersion() {
+            const storedVersion = localStorage.getItem('ffxiv-tool-version');
+
+            if (storedVersion !== CURRENT_VERSION) {
+                // Clear any cached data that might be stale
+                localStorage.setItem('ffxiv-tool-version', CURRENT_VERSION);
+
+                // Show refresh prompt if user had a previous version
+                if (storedVersion) {
+                    showRefreshPrompt(`Update available!`);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function showRefreshPrompt(message) {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.9); z-index: 9999;
+        display: flex; align-items: center; justify-content: center;
+        font-family: Arial, sans-serif; color: white;
+    `;
+
+            overlay.innerHTML = `
+        <div style="background: #1e3c72; padding: 30px; border-radius: 15px; text-align: center;">
+            <h3>${message}</h3>
+            <p>Please refresh to get the latest data and fixes.</p>
+            <button onclick="location.reload()" style="
+                background: #4f46e5; color: white; border: none;
+                padding: 10px 20px; border-radius: 5px; cursor: pointer;
+                margin-top: 15px; font-size: 16px;
+            ">Refresh Now</button>
+        </div>
+    `;
+
+            document.body.appendChild(overlay);
+        }
     </script>
 </body>
 
